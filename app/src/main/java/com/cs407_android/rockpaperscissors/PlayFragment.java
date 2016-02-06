@@ -33,6 +33,7 @@ public class PlayFragment extends Fragment {
     private Button paperButton;
     private Button scissorsButton;
     private TextView headerTextView;
+    private int test;
 
     /**
      * DONT CHANGE THIS METHOD
