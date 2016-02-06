@@ -26,6 +26,7 @@ public class PlayFragment extends Fragment {
     private static final String ARG_PLAYER_TWO = "player2";
 
     private String player1Choice;
+    //test comment
     private String player2Choice;
 
     private Button rockButton;
