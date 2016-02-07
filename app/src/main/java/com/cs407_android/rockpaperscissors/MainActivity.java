@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.xgc1986.ripplebutton.widget.RippleButton;
 
@@ -23,7 +24,15 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             return;
         }
-        playButton = (Button) get
+        playButton = (Button) findViewById(R.id.playButton);
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "this is my Toast message!!! =)",
+                        Toast.LENGTH_LONG).show();
+                playPressed(null);
+            }
+        });
     }
 
     @Override
@@ -35,7 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void playPressed(View view) {
         //TODO: Put to start game play activity
-
+        //startActivity();
+        Intent downloadIntent = new Intent(this, PlayActivity.class);
+        //downloadIntent.setData(Uri.parse(fileUrl));
+        //startService(downloadIntent);
+        startActivity(downloadIntent);
     }
 
     @Override
