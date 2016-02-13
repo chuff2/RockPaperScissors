@@ -2,10 +2,13 @@ package com.cs407_android.rockpaperscissors;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +36,6 @@ public class PlayFragment extends Fragment {
     private Button paperButton;
     private Button scissorsButton;
     private TextView headerTextView;
-    private int test;
 
     /**
      * DONT CHANGE THIS METHOD
@@ -108,9 +110,13 @@ public class PlayFragment extends Fragment {
 
                 if(player1Choice == null) {
                    //TODO player 1 chose Rock
+                    player1Choice = getString(R.string.rock);
+                    switchToPlayer2();
                 }
                 else{
                     //TODO player 2 chose Rock
+                    player2Choice = getString(R.string.rock);
+                    determineWhoWon();
                 }
 
             }
@@ -122,11 +128,13 @@ public class PlayFragment extends Fragment {
 
                 if(player1Choice == null) {
                     //TODO
-
+                    player1Choice = getString(R.string.paper);
+                    switchToPlayer2();
                 }
                 else{
                     //TODO
-
+                    player2Choice = getString(R.string.paper);
+                    determineWhoWon();
                 }
             }
         });
@@ -137,11 +145,13 @@ public class PlayFragment extends Fragment {
 
                 if(player1Choice == null) {
                     //TODO
-
+                    player1Choice = getString(R.string.scissors);
+                    switchToPlayer2();
                 }
                 else{
                     //TODO
-
+                    player2Choice = getString(R.string.scissors);
+                    determineWhoWon();
                 }
             }
         });
@@ -161,16 +171,61 @@ public class PlayFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO start a rematch!
+                        rematch();
                     }
                 })
                 .setNegativeButton("Quit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO back out the the start screen
+                        backToStartScreen();
                     }
                 })
                 .show();
 
+    }
+
+
+    private void backToStartScreen(){
+        Intent mainActivity = new Intent(getActivity(), MainActivity.class);
+        startActivity(mainActivity);
+    }
+
+    private void rematch(){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //
+        PlayFragment fragment = newInstance(null, null);
+        fragmentTransaction.replace(R.id.main_fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void switchToPlayer2(){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //
+        PlayFragment fragment = newInstance(player1Choice, player2Choice);
+        fragmentTransaction.replace(R.id.main_fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void determineWhoWon(){
+        //tie
+        if (this.player1Choice == this.player2Choice){
+            displayWinner("Tie!");
+        }
+        //if player 1 wins
+        else if ((player1Choice == getString(R.string.rock) && player2Choice == getString(R.string.scissors))
+                || (player1Choice == getString(R.string.paper) && player2Choice == getString(R.string.rock))
+                || (player1Choice == getString(R.string.scissors) && player2Choice == getString(R.string.paper))
+                ){
+            displayWinner(ARG_PLAYER_ONE);
+        }
+        //if player 2 wins
+        else{
+            displayWinner(ARG_PLAYER_TWO);
+        }
     }
 
 
