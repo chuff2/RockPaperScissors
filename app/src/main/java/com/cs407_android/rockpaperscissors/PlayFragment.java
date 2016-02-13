@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -170,16 +171,33 @@ public class PlayFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO start a rematch!
+                        rematch();
                     }
                 })
                 .setNegativeButton("Quit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO back out the the start screen
+                        backToStartScreen();
                     }
                 })
                 .show();
 
+    }
+
+
+    private void backToStartScreen(){
+        Intent mainActivity = new Intent(getActivity(), MainActivity.class);
+        startActivity(mainActivity);
+    }
+
+    private void rematch(){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //
+        PlayFragment fragment = newInstance(null, null);
+        fragmentTransaction.replace(R.id.main_fragment_container, fragment);
+        fragmentTransaction.commit();
     }
 
     private void switchToPlayer2(){
@@ -195,18 +213,18 @@ public class PlayFragment extends Fragment {
     private void determineWhoWon(){
         //tie
         if (this.player1Choice == this.player2Choice){
-
+            displayWinner("Tie!");
         }
         //if player 1 wins
         else if ((player1Choice == getString(R.string.rock) && player2Choice == getString(R.string.scissors))
                 || (player1Choice == getString(R.string.paper) && player2Choice == getString(R.string.rock))
                 || (player1Choice == getString(R.string.scissors) && player2Choice == getString(R.string.paper))
                 ){
-
+            displayWinner(ARG_PLAYER_ONE);
         }
         //if player 2 wins
         else{
-
+            displayWinner(ARG_PLAYER_TWO);
         }
     }
 
