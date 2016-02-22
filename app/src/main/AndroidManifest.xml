@@ -27,6 +27,7 @@
             android:name=".PlayActivity"
             android:label="@string/title_activity_play"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:parentActivityName=".MainActivity"
             >
         </activity>
     </application>
